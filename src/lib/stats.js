@@ -2,8 +2,13 @@ export const PASS_PERCENT = 50
 
 export const round1 = (n) => (n == null || Number.isNaN(n) ? null : Math.round(n * 10) / 10)
 
+// Pass/fail and grades use the same 1-decimal value that is shown on screen,
+// so a student who sees "50%" is never marked as failed.
+export const isPass = (p) => p != null && round1(p) >= PASS_PERCENT
+
 export function gradeOf(p) {
   if (p == null) return '-'
+  p = round1(p)
   if (p >= 90) return 'A+'
   if (p >= 80) return 'A'
   if (p >= 70) return 'B'
@@ -14,6 +19,7 @@ export function gradeOf(p) {
 
 export function gradeColor(p) {
   if (p == null) return 'var(--muted)'
+  p = round1(p)
   if (p >= 80) return 'var(--green)'
   if (p >= 60) return 'var(--blue)'
   if (p >= PASS_PERCENT) return 'var(--amber)'
@@ -68,7 +74,7 @@ export function compute({ students, subjects, tests, marks, profiles }) {
     t.avgPct = avg(pcts)
     t.highPct = pcts.length ? Math.max(...pcts) : null
     t.lowPct = pcts.length ? Math.min(...pcts) : null
-    t.passRate = pcts.length ? (pcts.filter((p) => p >= PASS_PERCENT).length / pcts.length) * 100 : null
+    t.passRate = pcts.length ? (pcts.filter(isPass).length / pcts.length) * 100 : null
   })
 
   // student-level stats

@@ -1,4 +1,4 @@
-import { gradeOf, round1, PASS_PERCENT } from './stats'
+import { gradeOf, isPass, round1 } from './stats'
 
 const fmt = (n) => (n == null ? '-' : `${round1(n)}%`)
 const SCHOOL = 'Grade 9 - Result Card'
@@ -73,7 +73,7 @@ export async function exportExcel(data, subjects, students) {
         obt: r.present ? Number(r.obtained) : '',
         total: Number(t.total_marks),
         pct: r.present ? round1(r.pct) : '',
-        status: !r.present ? 'Absent' : r.pct >= PASS_PERCENT ? 'Pass' : 'Fail',
+        status: !r.present ? 'Absent' : isPass(r.pct) ? 'Pass' : 'Fail',
       })
     }),
   )
@@ -124,7 +124,7 @@ function drawResultCard(doc, autoTable, st, classPct) {
   doc.setTextColor(90)
   doc.text(`Roll No: ${st.student.roll_no}    Section: ${st.student.section || '-'}`, 14, 46)
 
-  const pass = st.pct != null && st.pct >= PASS_PERCENT
+  const pass = isPass(st.pct)
   const boxes = [
     ['Overall', fmt(st.pct)],
     ['Grade', gradeOf(st.pct)],

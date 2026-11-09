@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom'
 import { Bar, BarChart, CartesianGrid, Cell, Legend, Line, LineChart, Pie, PieChart, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import { useApp } from '../AppContext'
-import { gradeOf, gradeColor, round1, testTrend, PASS_PERCENT } from '../lib/stats'
+import { gradeOf, isPass, round1, testTrend } from '../lib/stats'
 import { COLORS, Empty, Pct, Stat } from '../components/ui'
 
 export default function Overview() {
@@ -20,7 +20,7 @@ export default function Overview() {
   const subjData = subjectStats.filter((s) => s.pct != null).map((s) => ({ name: s.subject.name, pct: round1(s.pct) }))
   const top = ranked.slice(0, 5)
   const bottom = ranked.slice(-5).reverse()
-  const passing = ranked.filter((s) => s.pct >= PASS_PERCENT).length
+  const passing = ranked.filter((s) => isPass(s.pct)).length
 
   return (
     <>
