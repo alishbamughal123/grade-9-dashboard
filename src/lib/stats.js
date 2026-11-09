@@ -1,4 +1,4 @@
-export const PASS_PERCENT = 40
+export const PASS_PERCENT = 50
 
 export const round1 = (n) => (n == null || Number.isNaN(n) ? null : Math.round(n * 10) / 10)
 
@@ -8,8 +8,7 @@ export function gradeOf(p) {
   if (p >= 80) return 'A'
   if (p >= 70) return 'B'
   if (p >= 60) return 'C'
-  if (p >= 50) return 'D'
-  if (p >= PASS_PERCENT) return 'E'
+  if (p >= PASS_PERCENT) return 'D'
   return 'F'
 }
 

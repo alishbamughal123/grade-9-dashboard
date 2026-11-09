@@ -8,11 +8,11 @@ export default function Overview() {
   const { data, students, subjects } = useApp()
   const { ranked, testList, subjectStats, classPct } = data
 
-  const gradeBuckets = ['A+', 'A', 'B', 'C', 'D', 'E', 'F'].map((g) => ({
+  const gradeBuckets = ['A+', 'A', 'B', 'C', 'D', 'F'].map((g) => ({
     name: g,
     value: ranked.filter((s) => gradeOf(s.pct) === g).length,
   }))
-  const gradeCols = { 'A+': '#16a34a', A: '#22c55e', B: '#3b82f6', C: '#06b6d4', D: '#f59e0b', E: '#fb923c', F: '#ef4444' }
+  const gradeCols = { 'A+': '#16a34a', A: '#22c55e', B: '#3b82f6', C: '#06b6d4', D: '#f59e0b', F: '#ef4444' }
 
   const tested = testList.filter((t) => t.avgPct != null)
   const bestTest = tested.slice().sort((a, b) => b.avgPct - a.avgPct)[0]
