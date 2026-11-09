@@ -99,6 +99,7 @@ export default function Overview() {
                   <li key={s.student.id} className="hi">
                     <span className="rk">#{s.rank}</span>
                     <Link to={`/students/${s.student.id}`}>{s.student.name}</Link>
+                    <small>{s.obtained}/{s.total}</small>
                     <Pct v={s.pct} grade />
                   </li>
                 ))}
@@ -111,6 +112,7 @@ export default function Overview() {
                   <li key={s.student.id} className="lo">
                     <span className="rk">#{s.rank}</span>
                     <Link to={`/students/${s.student.id}`}>{s.student.name}</Link>
+                    <small>{s.obtained}/{s.total}</small>
                     <Pct v={s.pct} grade />
                   </li>
                 ))}

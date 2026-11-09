@@ -7,6 +7,7 @@ export default function Layout({ children }) {
   const links = [
     ['/', '📊', 'Overview'],
     ['/tests', '📝', 'Tests'],
+    ['/class', '🏫', 'Class'],
     ['/students', '🎓', 'Students'],
     ['/reports', '📄', 'Reports'],
     ...(isAdmin ? [['/admin', '⚙️', 'Admin']] : []),

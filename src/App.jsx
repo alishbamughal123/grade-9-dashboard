@@ -6,6 +6,7 @@ import Login from './pages/Login'
 import Overview from './pages/Overview'
 import Tests from './pages/Tests'
 import TestDetail from './pages/TestDetail'
+import ClassView from './pages/ClassView'
 import Students from './pages/Students'
 import StudentProfile from './pages/StudentProfile'
 import Reports from './pages/Reports'
@@ -36,6 +37,7 @@ function Gate() {
         <Route path="/" element={<Overview />} />
         <Route path="/tests" element={<Tests />} />
         <Route path="/tests/:id" element={<TestDetail />} />
+        <Route path="/class" element={<ClassView />} />
         <Route path="/students" element={<Students />} />
         <Route path="/students/:id" element={<StudentProfile />} />
         <Route path="/reports" element={<Reports />} />

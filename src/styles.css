@@ -90,6 +90,16 @@ tr:hover td { background: #fafbff; }
 tr.hi-row td { background: #f0fdf4 !important; }
 tr.lo-row td { background: #fef2f2 !important; }
 td.hi { background: transparent; }
+.matrix th, .matrix td { text-align: center; }
+.matrix th:first-child, .matrix td:first-child { text-align: left; }
+.matrix .sub { display: block; font-size: 11px; font-weight: 400; color: var(--muted); text-transform: none; letter-spacing: 0; }
+.matrix tfoot td { background: #f8fafc; border-top: 2px solid var(--line); }
+.sticky-col { position: sticky; left: 0; background: #fff; z-index: 1; box-shadow: 1px 0 0 var(--line); }
+th.sticky-col { background: #f8fafc; }
+tr.hi-row td.sticky-col { background: #f0fdf4; }
+tr.lo-row td.sticky-col { background: #fef2f2; }
+.matrix td.cell-hi { background: #dcfce7 !important; }
+.matrix td.cell-lo { background: #fee2e2 !important; }
 .pct { font-weight: 600; }
 .pct i { font-style: normal; font-size: 11px; background: #f1f5f9; color: var(--text); padding: 1px 6px; border-radius: 6px; margin-left: 6px; }
 .tag { background: var(--primary-soft); color: var(--primary); padding: 2px 8px; border-radius: 999px; font-size: 12px; font-weight: 500; }

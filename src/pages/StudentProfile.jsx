@@ -48,7 +48,7 @@ export default function StudentProfile() {
       </div>
 
       <div className="grid stats">
-        <Stat label="Overall" value={st.pct == null ? '-' : `${round1(st.pct)}%`} sub={`Grade ${gradeOf(st.pct)}`} tone="primary" />
+        <Stat label="Overall" value={st.pct == null ? '-' : `${round1(st.pct)}%`} sub={`${st.obtained} / ${st.total} marks · Grade ${gradeOf(st.pct)}`} tone="primary" />
         <Stat label="Class rank" value={st.rank ? `#${st.rank}` : '-'} sub={`of ${data.ranked.length}`} />
         <Stat label="Tests taken" value={st.testsTaken} sub={`${st.rows.length - st.testsTaken} absent`} />
         <Stat label="Strongest" value={best ? best.subject.name : '-'} sub={best ? `${round1(best.pct)}%` : ''} tone="green" />
@@ -94,6 +94,25 @@ export default function StudentProfile() {
                 </div>
               </div>
             )}
+          </div>
+
+          <div className="card table-wrap">
+            <h3>Subject-wise marks</h3>
+            <table>
+              <thead><tr><th>Subject</th><th>Tests</th><th>Marks</th><th>%</th><th>Grade</th><th>Class avg</th></tr></thead>
+              <tbody>
+                {st.subjects.map((s) => (
+                  <tr key={s.subject.id}>
+                    <td><span className="tag">{s.subject.name}</span></td>
+                    <td>{s.tests}</td>
+                    <td><b>{s.obtained}</b> / {s.total}</td>
+                    <td><Pct v={s.pct} /></td>
+                    <td>{gradeOf(s.pct)}</td>
+                    <td>{round1(data.subjectStats.find((x) => x.subject.id === s.subject.id)?.pct) ?? '-'}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
           <div className="card">

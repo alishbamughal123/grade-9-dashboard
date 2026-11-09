@@ -1,3 +1,5 @@
+import { jsPDF } from 'jspdf'
+import autoTable from 'jspdf-autotable'
 import { gradeOf, isPass, round1 } from './stats'
 
 const fmt = (n) => (n == null ? '-' : `${round1(n)}%`)
@@ -13,7 +15,12 @@ function save(blob, name) {
 
 /* ---------------------------- EXCEL ---------------------------- */
 export async function exportExcel(data, subjects, students) {
-  const ExcelJS = (await import('exceljs')).default
+  let ExcelJS
+  try {
+    ExcelJS = (await import('exceljs')).default
+  } catch {
+    throw new Error('The app was updated. Please refresh the page (Ctrl+Shift+R) and try again.')
+  }
   const wb = new ExcelJS.Workbook()
 
   const head = (ws) => {
@@ -30,13 +37,15 @@ export async function exportExcel(data, subjects, students) {
     { header: 'Roll No', key: 'roll', width: 10 },
     { header: 'Name', key: 'name', width: 26 },
     ...subjects.map((s) => ({ header: s.name + ' %', key: s.id, width: 14 })),
+    { header: 'Marks Obtained', key: 'obt', width: 15 },
+    { header: 'Out Of', key: 'outof', width: 9 },
     { header: 'Overall %', key: 'overall', width: 12 },
     { header: 'Grade', key: 'grade', width: 8 },
   ]
   head(ws1)
   students.forEach((s) => {
     const st = data.studentStats.get(s.id)
-    const row = { rank: st.rank ?? '', roll: s.roll_no, name: s.name, overall: round1(st.pct) ?? '', grade: gradeOf(st.pct) }
+    const row = { rank: st.rank ?? '', roll: s.roll_no, name: s.name, obt: st.testsTaken ? st.obtained : '', outof: st.testsTaken ? st.total : '', overall: round1(st.pct) ?? '', grade: gradeOf(st.pct) }
     subjects.forEach((sub) => {
       const x = st.subjects.find((y) => y.subject.id === sub.id)
       row[sub.id] = x ? round1(x.pct) : ''
@@ -101,9 +110,9 @@ export async function exportExcel(data, subjects, students) {
 }
 
 /* ------------------------------ PDF ------------------------------ */
+// jsPDF is bundled with the app (not lazy-loaded) so downloads keep working
+// even if the site was redeployed while the page was open.
 async function pdfLibs() {
-  const { jsPDF } = await import('jspdf')
-  const autoTable = (await import('jspdf-autotable')).default
   return { jsPDF, autoTable }
 }
 
@@ -201,7 +210,8 @@ export async function exportClassPdf(data, subjects, students) {
       .sort((a, b) => (data.studentStats.get(a.id).rank ?? 999) - (data.studentStats.get(b.id).rank ?? 999))
       .map((s) => {
         const st = data.studentStats.get(s.id)
-        return [st.rank ?? '-', s.roll_no, s.name, ...subjects.map((sub) => fmt(st.subjects.find((x) => x.subject.id === sub.id)?.pct)), fmt(st.pct), gradeOf(st.pct)]
+        const cell = (x) => (x ? `${x.obtained}/${x.total} (${fmt(x.pct)})` : '-')
+        return [st.rank ?? '-', s.roll_no, s.name, ...subjects.map((sub) => cell(st.subjects.find((x) => x.subject.id === sub.id))), st.testsTaken ? `${st.obtained}/${st.total} (${fmt(st.pct)})` : '-', gradeOf(st.pct)]
       }),
     headStyles: { fillColor: [79, 70, 229] },
     styles: { fontSize: 8 },

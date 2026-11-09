@@ -33,13 +33,14 @@ export default function Students() {
       ) : (
         <div className="card table-wrap">
           <table>
-            <thead><tr><th>Roll</th><th>Name</th><th>Tests</th><th>Overall</th><th>Rank</th><th /></tr></thead>
+            <thead><tr><th>Roll</th><th>Name</th><th>Tests</th><th>Marks</th><th>Overall</th><th>Rank</th><th /></tr></thead>
             <tbody>
               {list.map((s) => (
                 <tr key={s.id} className={s.id === hi ? 'hi-row' : s.id === lo ? 'lo-row' : ''}>
                   <td>{s.roll_no}</td>
                   <td><b>{s.name}</b></td>
                   <td>{st(s).testsTaken}</td>
+                  <td>{st(s).testsTaken ? `${st(s).obtained} / ${st(s).total}` : '-'}</td>
                   <td><Pct v={st(s).pct} grade /></td>
                   <td>{st(s).rank ? `#${st(s).rank}` : '-'}</td>
                   <td><Link className="btn sm" to={`/students/${s.id}`}>Profile</Link></td>
